@@ -1,0 +1,16 @@
+import csv # csv라는 라이브러리를 가져온다 
+
+f = open('./covid19_articles.csv','r')
+
+rdr = csv.reader(f)
+
+next(rdr)
+
+number = 0
+
+for column in rdr:
+    if '속보' in column[2]:
+        print(column[2])
+        number += 1
+        
+print("속보 기사 개수:",number)
