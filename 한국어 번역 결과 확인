@@ -1,0 +1,44 @@
+from selenium import webdriver 
+import time 
+import csv
+
+options = webdriver.ChromeOptions()
+options.add_experimental_option("excludeSwitches", ["enable-logging"])
+driver = webdriver.Chrome(options=options)
+
+papago_url = "https://papago.naver.com"
+driver.get(papago_url) #driver에 있는 get함수를 사용해서 papago_url변수를ㄹ 연다
+time.sleep(3)
+
+# 영어 한국어 전환 버튼 한번만 클릭 (제대로 못함)
+
+
+# CSV 파일의 한국어만 따로 저장 
+
+f = open('./my_papago.csv','r')
+
+rdr = csv.reader(f)
+
+next(rdr)
+
+WordList = []
+for row in rdr:
+    WordList.append(row[1])
+
+
+for word in WordList:
+
+    form = driver.find_element_by_css_selector("textarea#txtSource")
+    form.send_keys(word)  
+
+    button = driver.find_element_by_css_selector("button#btnTranslate") 
+    button.click() 
+    time.sleep(2)
+
+
+    result = driver.find_element_by_css_selector("div#txtTarget") 
+
+    print(word,":",result.text)
+    form.clear()
+
+driver.close()
